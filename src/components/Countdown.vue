@@ -2,7 +2,16 @@
   <section class="wrapper-section">
     <DatePicker v-model="selectedDate" />
 
-    <p class="countdown-units" v-html="timeDifference"></p>
+    <p class="countdown-units" v-if="isToday(userDate)">Today is</p>
+    <p class="countdown-units" v-else>The chosen date is</p>
+    <p class="countdown-units bold primary">{{ formatTimeDifference(timeDifferenceMs) }}</p>
+    <p
+      class="countdown-units"
+      v-if="isToday(userDate) || (!isToday(userDate) && timeDifferenceMs > 0)"
+    >
+      after
+    </p>
+    <p class="countdown-units" v-else>before</p>
     <p class="countdown-units">the release of unrelated</p>
     <p class="countdown-units">Belgian Techno anthem</p>
     <p class="countdown-units bold">Pump Up The Jam</p>
@@ -92,12 +101,12 @@ const formatTimeDifference = ms => {
 
 const timeDifference = computed(() => {
   if (isToday(userDate.value)) {
-    return `Today is <span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> after`
+    return `<span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span>`
   } else {
     if (timeDifferenceMs.value > 0) {
-      return `<span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> after`
+      return `Chosen date is <span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> after`
     } else {
-      return `<span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> before`
+      return `Chosen date is <span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> before`
     }
   }
 })

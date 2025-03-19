@@ -14,9 +14,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: {
         name: 'Pump Up The Jam Calculator',
-        short_name: 'PUTJ Calculator',
+        short_name: 'PUTJ',
         description:
-          'Time difference between a date and the release of unrelated Techno anthem "Pump Up The Jam"',
+          'Time difference between a date and the release of unrelated Belgian Techno anthem "Pump Up The Jam"',
         theme_color: '#a599e9',
         icons: [
           {

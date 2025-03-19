@@ -2,9 +2,10 @@
   <section class="wrapper-section">
     <DatePicker v-model="selectedDate" />
 
-    <p class="countdown-units">
-      {{ timeDifference }}
-    </p>
+    <p class="countdown-units" v-html="timeDifference"></p>
+    <p class="countdown-units">the release of unrelated</p>
+    <p class="countdown-units">Belgian Techno anthem</p>
+    <p class="countdown-units bold">Pump Up The Jam</p>
   </section>
 </template>
 
@@ -49,12 +50,12 @@ const formatTimeDifference = ms => {
 
     if (distanceToNextMillennium <= 50) {
       return Math.random() > 0.5
-        ? `about ${nextMillennium} thousand years`
-        : `nearly than ${nextMillennium} millennium`
+        ? `About ${nextMillennium} thousand years`
+        : `Nearly than ${nextMillennium} millennium`
     } else if (years >= 1000 && years - millennium * 1000 <= 50) {
       return Math.random() > 0.5
-        ? `about ${millennium} thousand years`
-        : `slightly more than ${millennium} millennium`
+        ? `About ${millennium} thousand years`
+        : `Slightly more than ${millennium} millennium`
     }
   }
 
@@ -67,12 +68,12 @@ const formatTimeDifference = ms => {
     const randomChoice = Math.random() > 0.5
 
     if (distanceToNextCentury <= 15 && randomChoice) {
-      return `nearly ${nextCentury} ${nextCentury === 1 ? 'century' : 'centuries'}`
+      return `Nearly ${nextCentury} ${nextCentury === 1 ? 'century' : 'centuries'}`
     } else if (distanceToPrevCentury <= 15 && randomChoice) {
-      return `slightly more than ${century} ${century === 1 ? 'century' : 'centuries'}`
+      return `Slightly more than ${century} ${century === 1 ? 'century' : 'centuries'}`
     } else {
       const roundedYears = Math.round(years / 10) * 10
-      return `about ${roundedYears} years`
+      return `About ${roundedYears} years`
     }
   } else if (years > 0) {
     return `${years} year${years > 1 ? 's' : ''}`
@@ -91,12 +92,12 @@ const formatTimeDifference = ms => {
 
 const timeDifference = computed(() => {
   if (isToday(userDate.value)) {
-    return `We are ${formatTimeDifference(timeDifferenceMs.value)} after "Pump Up The Jam" release`
+    return `Today is <span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> after`
   } else {
     if (timeDifferenceMs.value > 0) {
-      return `${formatTimeDifference(timeDifferenceMs.value)} after "Pump Up The Jam" release`
+      return `<span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> after`
     } else {
-      return `${formatTimeDifference(timeDifferenceMs.value)} before "Pump Up The Jam" release`
+      return `<span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> before`
     }
   }
 })
@@ -107,10 +108,19 @@ const timeDifference = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-inline: 16px;
 }
 
 .countdown-units {
-  font-size: 2rem;
-  line-height: normal;
+  font-size: 1.5rem;
+  margin-block: 0.25rem;
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 512px) {
+  .countdown-units {
+    font-size: 2rem;
+    margin-block: 0.5rem;
+  }
 }
 </style>

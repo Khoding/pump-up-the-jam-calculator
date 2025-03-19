@@ -111,5 +111,6 @@ const timeDifference = computed(() => {
 
 .countdown-units {
   font-size: 2rem;
+  line-height: normal;
 }
 </style>

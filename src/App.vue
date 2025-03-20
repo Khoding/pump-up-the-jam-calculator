@@ -1,5 +1,5 @@
 <template>
-  <div class="h1-wrapper center-align">
+  <div class="h1-wrapper center-align top-margin">
     <h1 class="h1">Pump Up The Jam Calculator</h1>
   </div>
 

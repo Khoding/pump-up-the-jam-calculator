@@ -3,6 +3,7 @@
     <DatePicker v-model="selectedDate" />
 
     <p class="countdown-units" v-if="isToday(userDate)">Today is</p>
+    <p class="countdown-units" v-else-if="isExtremeDuration">The chosen date is</p>
     <p class="countdown-units" v-else>The chosen date is</p>
     <p class="countdown-units bold primary">{{ formatTimeDifference(timeDifferenceMs) }}</p>
     <p
@@ -82,25 +83,36 @@ const timeDifferenceMs = computed(() => {
   return userDate.value.timestamp - pumpUpTheJamTimestamp
 })
 
+// Helper computed property to determine if we're dealing with an extreme timeline
+const isExtremeDuration = computed(() => {
+  if (userDate.value.isExtended) {
+    return Math.abs(userDate.value.yearDifference) > 1000
+  }
+  return Math.abs(timeDifferenceMs.value) > 1000 * 365.25 * 24 * 60 * 60 * 1000
+})
+
 const formatTimeDifference = ms => {
   // Special handling for extended dates
   if (userDate.value.isExtended) {
     const absYearDiff = Math.abs(userDate.value.yearDifference)
 
-    // Display based on magnitude
+    // Display based on magnitude with properly posh British wording
     if (absYearDiff >= 1000000000) {
-      return `${(absYearDiff / 1000000000).toFixed(1)} billion years`
+      return `a most remarkable ${(absYearDiff / 1000000000).toFixed(1)} billion years, I dare say`
     }
     if (absYearDiff >= 1000000) {
-      return `${(absYearDiff / 1000000).toFixed(1)} million years`
+      return `precisely ${(absYearDiff / 1000000).toFixed(1)} million years, rather extraordinary`
     }
     if (absYearDiff >= 1000) {
-      return `${(absYearDiff / 1000).toFixed(1)} thousand years`
+      return `approximately ${(absYearDiff / 1000).toFixed(1)} thousand years, quite substantial indeed`
     }
-    return `${absYearDiff} years`
+    // Always use elaborate phrasing regardless of timespan
+    return absYearDiff > 100
+      ? `a thoroughly calculated ${absYearDiff} years, if I may be so precise`
+      : `precisely ${absYearDiff} years, as one would expect`
   }
 
-  // Regular formatting for normal dates
+  // Regular formatting for normal dates with British flair
   const absMs = Math.abs(ms)
 
   const seconds = Math.floor(absMs / 1000)
@@ -116,13 +128,9 @@ const formatTimeDifference = ms => {
     const distanceToNextMillennium = nextMillennium * 1000 - years
 
     if (distanceToNextMillennium <= 50) {
-      return Math.random() > 0.5
-        ? `About ${nextMillennium} thousand years`
-        : `Nearly than ${nextMillennium} millennium`
+      return `very nearly ${nextMillennium} thousand years, approaching the milestone rather splendidly`
     } else if (years >= 1000 && years - millennium * 1000 <= 50) {
-      return Math.random() > 0.5
-        ? `About ${millennium} thousand years`
-        : `Slightly more than ${millennium} millennium`
+      return `marginally exceeding ${millennium} ${millennium === 1 ? 'millennium' : 'millennia'}, most impressive`
     }
   }
 
@@ -132,28 +140,26 @@ const formatTimeDifference = ms => {
     const distanceToNextCentury = nextCentury * 100 - years
     const distanceToPrevCentury = years - century * 100
 
-    const randomChoice = Math.random() > 0.5
-
-    if (distanceToNextCentury <= 15 && randomChoice) {
-      return `Nearly ${nextCentury} ${nextCentury === 1 ? 'century' : 'centuries'}`
-    } else if (distanceToPrevCentury <= 15 && randomChoice) {
-      return `Slightly more than ${century} ${century === 1 ? 'century' : 'centuries'}`
+    if (distanceToNextCentury <= 15) {
+      return `approaching ${nextCentury} ${nextCentury === 1 ? 'century' : 'centuries'} with remarkable haste, I must say`
+    } else if (distanceToPrevCentury <= 15) {
+      return `a smidgen over ${century} ${century === 1 ? 'century' : 'centuries'}, if one wishes to be precise`
     } else {
       const roundedYears = Math.round(years / 10) * 10
-      return `About ${roundedYears} years`
+      return `approximately ${roundedYears} years, give or take a fortnight`
     }
   } else if (years > 0) {
-    return `${years} year${years > 1 ? 's' : ''}`
+    return `precisely ${years} ${years === 1 ? 'year' : 'years'}, as the calendar would suggest`
   } else if (months > 0) {
-    return `${months} month${months > 1 ? 's' : ''}`
+    return `a matter of ${months} ${months === 1 ? 'month' : 'months'}, if you'll pardon my exactitude`
   } else if (days > 0) {
-    return `${days} day${days > 1 ? 's' : ''}`
+    return `${days} ${days === 1 ? 'day' : 'days'} on the dot, by my calculations`
   } else if (hours > 0) {
-    return `${hours} hour${hours > 1 ? 's' : ''}`
+    return `${hours} ${hours === 1 ? 'hour' : 'hours'} precisely, as the timepiece indicates`
   } else if (minutes > 0) {
-    return `${minutes} minute${minutes > 1 ? 's' : ''}`
+    return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}, according to my pocket watch`
   } else {
-    return `${seconds} second${seconds > 1 ? 's' : ''}`
+    return `a mere ${seconds} ${seconds === 1 ? 'second' : 'seconds'}, hardly worth mentioning`
   }
 }
 </script>
@@ -173,6 +179,8 @@ const formatTimeDifference = ms => {
 
   &.bold.primary {
     line-height: normal;
+    max-inline-size: 18ch;
+    white-space: inherit;
   }
 }
 
@@ -180,6 +188,10 @@ const formatTimeDifference = ms => {
   .countdown-units {
     font-size: 2rem;
     margin-block: 0.5rem;
+
+    &.bold.primary {
+      max-inline-size: none;
+    }
   }
 }
 

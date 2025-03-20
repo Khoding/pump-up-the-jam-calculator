@@ -130,7 +130,7 @@ function parseUserInput(input) {
   }
 
   // Add a debugging log to see which formats we're trying to parse
-  console.log('Failed to parse as extended format:', cleanInput)
+  // console.log('Failed to parse as extended format:', cleanInput)
 
   // Try standard date formats
   const patterns = [

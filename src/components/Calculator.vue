@@ -14,10 +14,8 @@
     <p class="countdown-units" v-else>before</p>
     <p class="countdown-units">the release of unrelated</p>
     <p class="countdown-units">Belgian Techno anthem</p>
-    <p class="countdown-units bold">
-      Pump Up The Jam
-      <span class="tooltip">Which was released on 18 August 1989</span>
-    </p>
+    <p class="countdown-units bold">Pump Up The Jam</p>
+    <p class="small-text">(Released as a single on 18 August 1989)</p>
   </section>
 </template>
 
@@ -26,26 +24,83 @@ import {ref, computed} from 'vue'
 
 import DatePicker from '@/components/DatePicker.vue'
 
-const pumpUpTheJamReleaseDate = new Date('18 August 1989')
+// Original release date remains the same
+const pumpUpTheJamReleaseDate = new Date(1989, 7, 18)
+const pumpUpTheJamYear = 1989
+const pumpUpTheJamTimestamp = pumpUpTheJamReleaseDate.getTime()
 
 const selectedDate = ref(new Date().toISOString().split('T')[0])
 
-const userDate = computed(() => new Date(selectedDate.value))
+const userDate = computed(() => {
+  // Check if this is an extended date format
+  if (selectedDate.value.startsWith('ext:')) {
+    // Parse the extended date
+    const parts = selectedDate.value.substring(4).split(':')
+    const year = parseInt(parts[0])
+    const era = parts[1] || 'AD'
+
+    // For timestamp calculation, we need to properly account for the relationship to our reference date
+    // If BC (negative year): Calculate from year 0 to our reference year + years BC
+    // If AD: Simply calculate the difference between years
+    const yearDifferenceFromReference =
+      era === 'BC'
+        ? pumpUpTheJamYear + Math.abs(year) // BC years count backwards from 0
+        : year - pumpUpTheJamYear // AD years count forward from 0
+
+    return {
+      isExtended: true,
+      year: year,
+      era: era,
+      yearDifference: yearDifferenceFromReference,
+      // Use the adjusted year difference for timestamp
+      timestamp: year * 365.25 * 24 * 60 * 60 * 1000,
+    }
+  }
+
+  // Standard date handling
+  const date = new Date(selectedDate.value)
+  date.setHours(0, 0, 0, 0)
+  return {
+    isExtended: false,
+    timestamp: date.getTime(),
+    date: date,
+  }
+})
 
 const isToday = date => {
+  if (date.isExtended) return false
+
   const today = new Date()
   return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
+    date.date.getDate() === today.getDate() &&
+    date.date.getMonth() === today.getMonth() &&
+    date.date.getFullYear() === today.getFullYear()
   )
 }
 
 const timeDifferenceMs = computed(() => {
-  return userDate.value.getTime() - pumpUpTheJamReleaseDate.getTime()
+  return userDate.value.timestamp - pumpUpTheJamTimestamp
 })
 
 const formatTimeDifference = ms => {
+  // Special handling for extended dates
+  if (userDate.value.isExtended) {
+    const absYearDiff = Math.abs(userDate.value.yearDifference)
+
+    // Display based on magnitude
+    if (absYearDiff >= 1000000000) {
+      return `${(absYearDiff / 1000000000).toFixed(1)} billion years`
+    }
+    if (absYearDiff >= 1000000) {
+      return `${(absYearDiff / 1000000).toFixed(1)} million years`
+    }
+    if (absYearDiff >= 1000) {
+      return `${(absYearDiff / 1000).toFixed(1)} thousand years`
+    }
+    return `${absYearDiff} years`
+  }
+
+  // Regular formatting for normal dates
   const absMs = Math.abs(ms)
 
   const seconds = Math.floor(absMs / 1000)

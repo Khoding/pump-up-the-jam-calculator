@@ -4,12 +4,12 @@
   </div>
 
   <main class="center-align top-margin">
-    <Countdown />
+    <Calculator />
   </main>
 </template>
 
 <script setup>
-import Countdown from '@/components/Countdown.vue'
+import Calculator from '@/components/Calculator.vue'
 </script>
 
 <style scoped>

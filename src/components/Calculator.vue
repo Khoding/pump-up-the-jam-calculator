@@ -156,9 +156,7 @@ const formatTimeDifference = ms => {
 
 const copyText = () => {
   const textToCopy = `${isToday(userDate.value) ? 'Today is' : 'The chosen date is'} ${formatTimeDifference(timeDifferenceMs.value)} ${isToday(userDate.value) || (!isToday(userDate.value) && timeDifferenceMs.value > 0) ? 'after' : 'before'} the release of unrelated Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
-  navigator.clipboard.writeText(textToCopy).then(() => {
-    alert('Text copied to clipboard!')
-  })
+  navigator.clipboard.writeText(textToCopy)
 }
 </script>
 

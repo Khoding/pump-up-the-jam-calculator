@@ -1,5 +1,5 @@
 <template>
-  <div class="h1-wrapper center-align top-margin">
+  <div class="h1-wrapper center-align">
     <h1 class="h1">Pump Up The Jam Calculator</h1>
   </div>
 
@@ -15,6 +15,7 @@ import Calculator from '@/components/Calculator.vue'
 <style scoped>
 .h1-wrapper {
   display: flex;
+  margin-block-start: 0;
 }
 
 .h1 {
@@ -29,8 +30,15 @@ import Calculator from '@/components/Calculator.vue'
   }
 }
 
-@media screen and (min-width: 40rem) {
+@media screen and (min-width: 44rem) {
   .h1 {
+    font-size: 3rem;
+  }
+}
+
+@media screen and (min-width: 56rem) {
+  .h1 {
+    inline-size: 24ch;
     font-size: 4rem;
   }
 }

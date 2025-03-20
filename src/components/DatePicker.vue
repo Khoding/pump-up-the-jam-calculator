@@ -1,5 +1,5 @@
 <template>
-  <div class="field label prefix border top-margin">
+  <div class="field label prefix border">
     <i>today</i>
     <input
       :value="displayValue"

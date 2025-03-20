@@ -96,23 +96,21 @@ const formatTimeDifference = ms => {
   if (userDate.value.isExtended) {
     const absYearDiff = Math.abs(userDate.value.yearDifference)
 
-    // Display based on magnitude with properly posh British wording
+    // Display based on magnitude with simple wording that works with before/after
     if (absYearDiff >= 1000000000) {
-      return `a most remarkable ${(absYearDiff / 1000000000).toFixed(1)} billion years, I dare say`
+      return `around ${(absYearDiff / 1000000000).toFixed(1)} billion years`
     }
     if (absYearDiff >= 1000000) {
-      return `precisely ${(absYearDiff / 1000000).toFixed(1)} million years, rather extraordinary`
+      return `around ${(absYearDiff / 1000000).toFixed(1)} million years`
     }
     if (absYearDiff >= 1000) {
-      return `approximately ${(absYearDiff / 1000).toFixed(1)} thousand years, quite substantial indeed`
+      return `around ${(absYearDiff / 1000).toFixed(1)} thousand years`
     }
-    // Always use elaborate phrasing regardless of timespan
-    return absYearDiff > 100
-      ? `a thoroughly calculated ${absYearDiff} years, if I may be so precise`
-      : `precisely ${absYearDiff} years, as one would expect`
+    // Use "approximately" for medium timeframes, nothing for recent dates
+    return absYearDiff > 100 ? `approximately ${absYearDiff} years` : `${absYearDiff} years`
   }
 
-  // Regular formatting for normal dates with British flair
+  // Regular formatting for normal dates
   const absMs = Math.abs(ms)
 
   const seconds = Math.floor(absMs / 1000)
@@ -128,9 +126,9 @@ const formatTimeDifference = ms => {
     const distanceToNextMillennium = nextMillennium * 1000 - years
 
     if (distanceToNextMillennium <= 50) {
-      return `very nearly ${nextMillennium} thousand years, approaching the milestone rather splendidly`
+      return `nearly ${nextMillennium} thousand years`
     } else if (years >= 1000 && years - millennium * 1000 <= 50) {
-      return `marginally exceeding ${millennium} ${millennium === 1 ? 'millennium' : 'millennia'}, most impressive`
+      return `slightly more than ${millennium} ${millennium === 1 ? 'millennium' : 'millennia'}`
     }
   }
 
@@ -141,25 +139,25 @@ const formatTimeDifference = ms => {
     const distanceToPrevCentury = years - century * 100
 
     if (distanceToNextCentury <= 15) {
-      return `approaching ${nextCentury} ${nextCentury === 1 ? 'century' : 'centuries'} with remarkable haste, I must say`
+      return `nearly ${nextCentury} ${nextCentury === 1 ? 'century' : 'centuries'}`
     } else if (distanceToPrevCentury <= 15) {
-      return `a smidgen over ${century} ${century === 1 ? 'century' : 'centuries'}, if one wishes to be precise`
+      return `just over ${century} ${century === 1 ? 'century' : 'centuries'}`
     } else {
       const roundedYears = Math.round(years / 10) * 10
-      return `approximately ${roundedYears} years, give or take a fortnight`
+      return `about ${roundedYears} years`
     }
   } else if (years > 0) {
-    return `precisely ${years} ${years === 1 ? 'year' : 'years'}, as the calendar would suggest`
+    return `${years} ${years === 1 ? 'year' : 'years'}`
   } else if (months > 0) {
-    return `a matter of ${months} ${months === 1 ? 'month' : 'months'}, if you'll pardon my exactitude`
+    return `${months} ${months === 1 ? 'month' : 'months'}`
   } else if (days > 0) {
-    return `${days} ${days === 1 ? 'day' : 'days'} on the dot, by my calculations`
+    return `${days} ${days === 1 ? 'day' : 'days'}`
   } else if (hours > 0) {
-    return `${hours} ${hours === 1 ? 'hour' : 'hours'} precisely, as the timepiece indicates`
+    return `${hours} ${hours === 1 ? 'hour' : 'hours'}`
   } else if (minutes > 0) {
-    return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}, according to my pocket watch`
+    return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`
   } else {
-    return `a mere ${seconds} ${seconds === 1 ? 'second' : 'seconds'}, hardly worth mentioning`
+    return `${seconds} ${seconds === 1 ? 'second' : 'seconds'}`
   }
 }
 </script>

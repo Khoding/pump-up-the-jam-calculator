@@ -14,7 +14,10 @@
     <p class="countdown-units" v-else>before</p>
     <p class="countdown-units">the release of unrelated</p>
     <p class="countdown-units">Belgian Techno anthem</p>
-    <p class="countdown-units bold">Pump Up The Jam</p>
+    <p class="countdown-units bold">
+      Pump Up The Jam
+      <span class="tooltip">Which was released on 18 August 1989</span>
+    </p>
   </section>
 </template>
 
@@ -124,6 +127,10 @@ const timeDifference = computed(() => {
   font-size: 1.5rem;
   margin-block: 0.25rem;
   white-space: nowrap;
+
+  &.bold.primary {
+    line-height: normal;
+  }
 }
 
 @media screen and (min-width: 512px) {
@@ -131,5 +138,9 @@ const timeDifference = computed(() => {
     font-size: 2rem;
     margin-block: 0.5rem;
   }
+}
+
+.tooltip {
+  pointer-events: none;
 }
 </style>

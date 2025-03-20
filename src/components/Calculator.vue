@@ -3,7 +3,6 @@
     <DatePicker v-model="selectedDate" />
 
     <p class="countdown-units" v-if="isToday(userDate)">Today is</p>
-    <p class="countdown-units" v-else-if="isExtremeDuration">The chosen date is</p>
     <p class="countdown-units" v-else>The chosen date is</p>
     <p class="countdown-units bold primary">{{ formatTimeDifference(timeDifferenceMs) }}</p>
     <p
@@ -18,6 +17,8 @@
     <p class="countdown-units bold">Pump Up The Jam</p>
     <p class="small-text">(Released as a single on 18 August 1989)</p>
   </section>
+
+  <button @click="copyText">Copy text</button>
 </template>
 
 <script setup>
@@ -81,14 +82,6 @@ const isToday = date => {
 
 const timeDifferenceMs = computed(() => {
   return userDate.value.timestamp - pumpUpTheJamTimestamp
-})
-
-// Helper computed property to determine if we're dealing with an extreme timeline
-const isExtremeDuration = computed(() => {
-  if (userDate.value.isExtended) {
-    return Math.abs(userDate.value.yearDifference) > 1000
-  }
-  return Math.abs(timeDifferenceMs.value) > 1000 * 365.25 * 24 * 60 * 60 * 1000
 })
 
 const formatTimeDifference = ms => {
@@ -159,6 +152,13 @@ const formatTimeDifference = ms => {
   } else {
     return `${seconds} ${seconds === 1 ? 'second' : 'seconds'}`
   }
+}
+
+const copyText = () => {
+  const textToCopy = `${isToday(userDate.value) ? 'Today is' : 'The chosen date is'} ${formatTimeDifference(timeDifferenceMs.value)} ${isToday(userDate.value) || (!isToday(userDate.value) && timeDifferenceMs.value > 0) ? 'after' : 'before'} the release of unrelated Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    alert('Text copied to clipboard!')
+  })
 }
 </script>
 

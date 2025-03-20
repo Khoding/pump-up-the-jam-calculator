@@ -101,18 +101,6 @@ const formatTimeDifference = ms => {
     return `${seconds} second${seconds > 1 ? 's' : ''}`
   }
 }
-
-const timeDifference = computed(() => {
-  if (isToday(userDate.value)) {
-    return `<span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span>`
-  } else {
-    if (timeDifferenceMs.value > 0) {
-      return `Chosen date is <span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> after`
-    } else {
-      return `Chosen date is <span class="bold primary">${formatTimeDifference(timeDifferenceMs.value)}</span> before`
-    }
-  }
-})
 </script>
 
 <style scoped>
@@ -133,7 +121,7 @@ const timeDifference = computed(() => {
   }
 }
 
-@media screen and (min-width: 512px) {
+@media screen and (min-width: 32rem) {
   .countdown-units {
     font-size: 2rem;
     margin-block: 0.5rem;

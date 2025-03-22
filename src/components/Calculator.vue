@@ -3,7 +3,20 @@
     <DatePicker v-model="selectedDate" />
 
     <p class="countdown-units" v-if="isToday(userDate)">Today is</p>
-    <p class="countdown-units" v-else>The chosen date is</p>
+    <nav v-else class="center-align">
+      <p class="countdown-units" v-if="!isEditing">{{ modelValue }}</p>
+      <div class="field label prefix border no-margin no-padding" v-else>
+        <input v-model="editingValue" type="text" ref="inputRef" />
+        <label>Prefix sentence</label>
+      </div>
+      <button
+        class="circle fill"
+        @click="toggleEdit"
+        :aria-label="isEditing ? 'Save text' : 'Edit text'"
+      >
+        <i>{{ isEditing ? 'save' : 'edit' }}</i>
+      </button>
+    </nav>
     <p class="countdown-units bold primary">{{ formatTimeDifference(timeDifferenceMs) }}</p>
     <p
       class="countdown-units"
@@ -22,7 +35,7 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue'
+import {ref, computed, nextTick} from 'vue'
 
 import DatePicker from '@/components/DatePicker.vue'
 
@@ -32,6 +45,22 @@ const pumpUpTheJamYear = 1989
 const pumpUpTheJamTimestamp = pumpUpTheJamReleaseDate.getTime()
 
 const selectedDate = ref(new Date().toISOString().split('T')[0])
+
+const isEditing = ref(false)
+const editingValue = ref('')
+const inputRef = ref(null)
+
+const toggleEdit = async () => {
+  if (isEditing.value) {
+    modelValue.value = editingValue.value
+    isEditing.value = false
+  } else {
+    editingValue.value = modelValue.value
+    isEditing.value = true
+    await nextTick()
+    inputRef.value?.focus()
+  }
+}
 
 const userDate = computed(() => {
   // Check if this is an extended date format
@@ -154,8 +183,13 @@ const formatTimeDifference = ms => {
   }
 }
 
+const modelValue = defineModel({
+  type: String,
+  default: 'The chosen date is',
+})
+
 const copyText = () => {
-  const textToCopy = `${isToday(userDate.value) ? 'Today is' : 'The chosen date is'} ${formatTimeDifference(timeDifferenceMs.value)} ${isToday(userDate.value) || (!isToday(userDate.value) && timeDifferenceMs.value > 0) ? 'after' : 'before'} the release of unrelated Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
+  const textToCopy = `${isToday(userDate.value) ? 'Today is' : modelValue.value} ${formatTimeDifference(timeDifferenceMs.value)} ${isToday(userDate.value) || (!isToday(userDate.value) && timeDifferenceMs.value > 0) ? 'after' : 'before'} the release of unrelated Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
   navigator.clipboard.writeText(textToCopy)
 }
 </script>

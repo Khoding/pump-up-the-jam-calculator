@@ -1,14 +1,9 @@
 <template>
   <div class="field label prefix border">
     <i>today</i>
-    <input
-      :value="displayValue"
-      @input="handleInput"
-      type="text"
-      placeholder="DD/MM/YYYY or '65M BC'"
-      @blur="validateAndFormat"
-    />
+    <input :value="displayValue" @input="handleInput" type="text" @blur="validateAndFormat" />
     <label>Date</label>
+    <span class="helper">DD/MM/YYYY or '65M BC'</span>
   </div>
 </template>
 

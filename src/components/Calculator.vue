@@ -6,7 +6,7 @@
     <nav v-else class="center-align">
       <p class="countdown-units" v-if="!isEditing">{{ modelValue }}</p>
       <div class="field label prefix border no-margin no-padding" v-else>
-        <input v-model="editingValue" type="text" ref="inputRef" />
+        <input v-model="editingValue" @keyup.enter="toggleEdit" type="text" ref="inputRef" />
         <label>Prefix sentence</label>
       </div>
       <button

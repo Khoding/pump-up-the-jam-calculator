@@ -31,7 +31,7 @@
     <p class="small-text">(Released as a single on 18 August 1989)</p>
   </section>
 
-  <button @click="copyText">Copy full text</button>
+  <button @click="copyText" class="bottom-margin">Copy full text</button>
 </template>
 
 <script setup>
@@ -39,9 +39,8 @@ import {ref, computed, nextTick} from 'vue'
 
 import DatePicker from '@/components/DatePicker.vue'
 
-// Original release date remains the same
 const pumpUpTheJamReleaseDate = new Date(1989, 7, 18)
-const pumpUpTheJamYear = 1989
+const pumpUpTheJamYear = pumpUpTheJamReleaseDate.getFullYear()
 const pumpUpTheJamTimestamp = pumpUpTheJamReleaseDate.getTime()
 
 const selectedDate = ref(new Date().toISOString().split('T')[0])

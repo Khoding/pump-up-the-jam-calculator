@@ -31,7 +31,7 @@
     <p class="small-text">(Released as a single on 18 August 1989)</p>
   </section>
 
-  <button @click="copyText" class="bottom-margin">Copy full text</button>
+  <button @click="copyText" @keyup.enter="copyText" class="bottom-margin">Copy full text</button>
 </template>
 
 <script setup>

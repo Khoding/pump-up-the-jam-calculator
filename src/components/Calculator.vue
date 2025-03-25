@@ -20,11 +20,11 @@
     <p class="countdown-units bold primary">{{ formatTimeDifference(timeDifferenceMs) }}</p>
     <p
       class="countdown-units"
-      v-if="isToday(userDate) || (!isToday(userDate) && timeDifferenceMs > 0)"
+      v-if="isToday(userDate) || (!isToday(userDate) && timeDifferenceMs > 0 && !isSameDate)"
     >
       after
     </p>
-    <p class="countdown-units" v-else>before</p>
+    <p class="countdown-units" v-else-if="!isSameDate">before</p>
     <p class="countdown-units">the release of unrelated</p>
     <p class="countdown-units">Belgian Techno anthem</p>
     <p class="countdown-units bold">Pump Up The Jam</p>
@@ -111,7 +111,18 @@ const timeDifferenceMs = computed(() => {
   return userDate.value.timestamp - pumpUpTheJamTimestamp
 })
 
+const isSameDate = computed(() => {
+  if (userDate.value.isExtended) return false
+  return Math.abs(timeDifferenceMs.value) < 86400000 // Less than one day difference
+})
+
 const formatTimeDifference = ms => {
+  // Special case for same date
+  if (Math.abs(ms) < 86400000 && !userDate.value.isExtended) {
+    // Less than one day difference
+    return 'the same date as'
+  }
+
   // Special handling for extended dates
   if (userDate.value.isExtended) {
     const absYearDiff = Math.abs(userDate.value.yearDifference)
@@ -178,7 +189,12 @@ const modelValue = defineModel({
 })
 
 const copyText = () => {
-  const textToCopy = `${isToday(userDate.value) ? 'Today is' : modelValue.value} ${formatTimeDifference(timeDifferenceMs.value)} ${isToday(userDate.value) || (!isToday(userDate.value) && timeDifferenceMs.value > 0) ? 'after' : 'before'} the release of unrelated Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
+  let textToCopy
+  if (isSameDate.value) {
+    textToCopy = `${isToday(userDate.value) ? 'Today is' : modelValue.value} the same date as the release of unrelated Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
+  } else {
+    textToCopy = `${isToday(userDate.value) ? 'Today is' : modelValue.value} ${formatTimeDifference(timeDifferenceMs.value)} ${isToday(userDate.value) || (!isToday(userDate.value) && timeDifferenceMs.value > 0) ? 'after' : 'before'} the release of unrelated Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
+  }
   navigator.clipboard.writeText(textToCopy)
 }
 </script>

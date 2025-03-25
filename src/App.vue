@@ -3,9 +3,15 @@
     <h1 class="h1">Pump Up The Jam Calculator</h1>
   </div>
 
-  <main class="center-align top-margin">
+  <main class="center-align top-margin bottom-margin">
     <Calculator />
   </main>
+
+  <p class="center-align bottom-margin left-padding right-padding">
+    <a href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc" class="link"
+      >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
+    >
+  </p>
 </template>
 
 <script setup>
@@ -19,9 +25,15 @@ import Calculator from '@/components/Calculator.vue'
 }
 
 .h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   inline-size: 16ch;
   min-inline-size: 16ch;
+}
+
+@media screen and (min-width: 20rem) {
+  .h1 {
+    font-size: 2rem;
+  }
 }
 
 @media screen and (min-width: 32rem) {

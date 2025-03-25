@@ -131,13 +131,10 @@ const formatTimeDifference = ms => {
     return absYearDiff > 100 ? `approximately ${absYearDiff} years` : `${absYearDiff} years`
   }
 
-  // Regular formatting for normal dates
   const absMs = Math.abs(ms)
 
   const seconds = Math.floor(absMs / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
-  const days = Math.floor(hours / 24)
+  const days = Math.floor(seconds / (60 * 60 * 24))
   const months = Math.floor(days / 30)
   const years = Math.floor(days / 365)
 
@@ -171,14 +168,8 @@ const formatTimeDifference = ms => {
     return `${years} ${years === 1 ? 'year' : 'years'}`
   } else if (months > 0) {
     return `${months} ${months === 1 ? 'month' : 'months'}`
-  } else if (days > 0) {
-    return `${days} ${days === 1 ? 'day' : 'days'}`
-  } else if (hours > 0) {
-    return `${hours} ${hours === 1 ? 'hour' : 'hours'}`
-  } else if (minutes > 0) {
-    return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`
   } else {
-    return `${seconds} ${seconds === 1 ? 'second' : 'seconds'}`
+    return `${days} ${days === 1 ? 'day' : 'days'}`
   }
 }
 

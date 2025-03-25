@@ -5,7 +5,7 @@
     <p class="countdown-units" v-if="isToday(userDate)">Today is</p>
     <nav v-else class="center-align">
       <p class="countdown-units" v-if="!isEditing">{{ modelValue }}</p>
-      <div class="field label prefix border no-margin no-padding" v-else>
+      <div class="field label border no-margin no-padding" v-else>
         <input v-model="editingValue" @keyup.enter="toggleEdit" type="text" ref="inputRef" />
         <label>Prefix sentence</label>
       </div>
@@ -54,7 +54,7 @@ const toggleEdit = async () => {
     modelValue.value = editingValue.value
     isEditing.value = false
   } else {
-    editingValue.value = modelValue.value
+    editingValue.value = modelValue.value.trim()
     isEditing.value = true
     await nextTick()
     inputRef.value?.focus()

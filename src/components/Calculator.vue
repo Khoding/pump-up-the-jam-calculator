@@ -194,7 +194,16 @@ const modelValue = defineModel({
 })
 
 const prefixMentionsPumpUpTheJam = computed(() => {
-  return modelValue.value.toLowerCase().includes('pump up the jam')
+  const lowercaseValue = modelValue.value.toLowerCase()
+
+  return (
+    lowercaseValue.includes('pump up the jam') ||
+    lowercaseValue.includes('technotronic') ||
+    lowercaseValue.includes('ya kid k') ||
+    lowercaseValue.includes('manuela kamosi') ||
+    lowercaseValue.includes('thomas de quincey') ||
+    lowercaseValue.includes('techno music')
+  )
 })
 
 const copyText = () => {

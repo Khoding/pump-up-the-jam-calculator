@@ -87,7 +87,6 @@ const userDate = computed(() => {
     }
   }
 
-  // Standard date handling
   const date = new Date(selectedDate.value)
   date.setHours(0, 0, 0, 0)
   return {

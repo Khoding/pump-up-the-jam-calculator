@@ -8,7 +8,11 @@
   </main>
 
   <p class="center-align bottom-margin left-padding right-padding">
-    <a href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc" class="link"
+    <a
+      href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
+      class="link"
+      target="_blank"
+      rel="noopener noreferrer"
       >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
     >
   </p>

@@ -51,7 +51,7 @@ import Calculator from '@/components/Calculator.vue'
 
 @media screen and (min-width: 56rem) {
   .h1 {
-    inline-size: 24ch;
+    inline-size: 25ch;
   }
 }
 </style>

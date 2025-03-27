@@ -1,10 +1,12 @@
 <template>
-  <div class="field label prefix border">
-    <i>today</i>
-    <input :value="displayValue" @input="handleInput" type="text" @blur="validateAndFormat" />
-    <label>Date</label>
-    <span class="helper">DD/MM/YYYY or '65M BC'</span>
-  </div>
+  <nav class="center-align bottom-padding large-padding">
+    <div class="field label prefix border small-width">
+      <i>today</i>
+      <input :value="displayValue" @input="handleInput" type="text" @blur="validateAndFormat" />
+      <label>Date</label>
+      <span class="helper">DD/MM/YYYY or '65M BC'</span>
+    </div>
+  </nav>
 </template>
 
 <script setup>

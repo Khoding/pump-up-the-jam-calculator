@@ -1,24 +1,23 @@
 <template>
-  <section class="wrapper-section">
-    <p class="countdown-units" v-if="isToday">Today is</p>
+  <section class="vertical">
+    <EditableText v-model="prefixText" />
 
-    <EditableText v-else v-model="prefixText" label="Prefix sentence" />
+    <nav class="center-align">
+      <article class="primary-container auto-width">
+        <h4 class="bold">{{ formattedTimeDifference }}</h4>
+      </article>
+    </nav>
 
-    <p class="countdown-units bold primary">{{ formattedTimeDifference }}</p>
-    <p class="countdown-units" v-if="isToday || (!isToday && timeDifferenceMs > 0 && !isSameDate)">
-      after
-    </p>
-    <p class="countdown-units" v-else-if="!isSameDate">before</p>
+    <h4 v-if="isToday || (!isToday && timeDifferenceMs > 0 && !isSameDate)">after</h4>
+    <h4 v-else-if="!isSameDate">before</h4>
 
-    <p class="countdown-units">
-      the release of <span v-if="!prefixMentionsPumpUpTheJam">unrelated</span>
-    </p>
-    <p class="countdown-units">Belgian Techno anthem</p>
-    <p class="countdown-units bold">Pump Up The Jam</p>
+    <h4>the release of <span v-if="!prefixMentionsPumpUpTheJam">unrelated</span></h4>
+    <h4>Belgian Techno anthem</h4>
+    <h4 class="bold">Pump Up The Jam</h4>
     <p class="small-text">(Released as a single on 18 August 1989)</p>
   </section>
 
-  <button @click="copyText" @keyup.enter="copyText">Copy full text</button>
+  <button @click="copyText" @keyup.enter="copyText" class="small tertiary">Copy full text</button>
 </template>
 
 <script setup>
@@ -74,35 +73,3 @@ const copyText = () => {
   navigator.clipboard.writeText(textToCopy)
 }
 </script>
-
-<style scoped>
-.wrapper-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-inline: 16px;
-}
-
-.countdown-units {
-  font-size: 1.5rem;
-  margin-block: 0.25rem;
-  text-wrap: pretty;
-
-  &.bold.primary {
-    line-height: normal;
-    max-inline-size: 18ch;
-    white-space: inherit;
-  }
-}
-
-@media screen and (min-width: 32rem) {
-  .countdown-units {
-    font-size: 2rem;
-    margin-block: 0.5rem;
-
-    &.bold.primary {
-      max-inline-size: none;
-    }
-  }
-}
-</style>

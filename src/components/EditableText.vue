@@ -1,10 +1,5 @@
 <template>
-  <nav class="edit-prefix center-align no-margin">
-    <p class="countdown-units" v-if="!isEditing">{{ modelValue }}</p>
-    <div class="field label border no-margin no-padding" v-else>
-      <input v-model="editingValue" @keyup.enter="toggleEdit" type="text" ref="inputRef" />
-      <label>{{ label }}</label>
-    </div>
+  <nav class="center-align no-margin vertical">
     <button
       class="circle fill small"
       @click="toggleEdit"
@@ -12,18 +7,17 @@
     >
       <i>{{ isEditing ? 'save' : 'edit' }}</i>
     </button>
+
+    <h4 v-if="!isEditing">{{ modelValue }}</h4>
+    <div class="field label border no-margin no-padding" v-else>
+      <input v-model="editingValue" @keyup.enter="toggleEdit" type="text" ref="inputRef" />
+      <label>Prefix sentence</label>
+    </div>
   </nav>
 </template>
 
 <script setup>
 import {ref, nextTick} from 'vue'
-
-const props = defineProps({
-  label: {
-    type: String,
-    default: 'Edit text',
-  },
-})
 
 const modelValue = defineModel()
 
@@ -43,14 +37,3 @@ const toggleEdit = async () => {
   }
 }
 </script>
-
-<style scoped>
-.edit-prefix {
-  flex-direction: column-reverse;
-  gap: 0.5rem;
-}
-
-.edit-prefix .countdown-units {
-  margin-block: 0;
-}
-</style>

@@ -28,12 +28,12 @@ function formatDateForDisplay(dateString) {
     const era = parts[1] || 'AD'
 
     // Format large numbers with appropriate units
-    if (Math.abs(year) >= 1000000000) {
-      return `${(year / 1000000000).toFixed(1)}B ${era}`
-    } else if (Math.abs(year) >= 1000000) {
-      return `${(year / 1000000).toFixed(1)}M ${era}`
-    } else if (Math.abs(year) >= 1000) {
-      return `${(year / 1000).toFixed(1)}K ${era}`
+    if (Math.abs(year) >= 10 ** 9) {
+      return `${(year / 10 ** 9).toFixed(1)}B ${era}`
+    } else if (Math.abs(year) >= 10 ** 6) {
+      return `${(year / 10 ** 6).toFixed(1)}M ${era}`
+    } else if (Math.abs(year) >= 10 ** 3) {
+      return `${(year / 10 ** 3).toFixed(1)}K ${era}`
     }
     return `${year} ${era}`
   }
@@ -51,7 +51,6 @@ function formatDateForDisplay(dateString) {
 
 // Parse user input and convert to appropriate date format
 function parseUserInput(input) {
-  // Clean the input
   const cleanInput = input.trim()
 
   // Extended date format patterns for geological time scales
@@ -59,46 +58,46 @@ function parseUserInput(input) {
     // Thousands of years (10K BC, 10 thousand BC)
     {
       regex: /^(\d+(?:\.\d+)?)\s*[Kk](?:\s+(?:BC|B\.C\.|BCE))?$/i,
-      format: m => `ext:${-Math.round(parseFloat(m[1]) * 1000)}:BC`,
+      format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 3)}:BC`,
     },
     {
       regex:
         /^(\d+(?:\.\d+)?)\s*(?:thousand|[Kk])\s*(?:years?)?(?:\s+(?:ago|before|BC|B\.C\.|BCE))?$/i,
-      format: m => `ext:${-Math.round(parseFloat(m[1]) * 1000)}:BC`,
+      format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 3)}:BC`,
     },
     {
       regex: /^(\d+(?:\.\d+)?)\s*(?:thousand|[Kk])(?:\s+(?:AD|A\.D\.|CE))?$/i,
-      format: m => `ext:${Math.round(parseFloat(m[1]) * 1000)}:AD`,
+      format: m => `ext:${Math.round(parseFloat(m[1]) * 10 ** 3)}:AD`,
     },
 
     // Millions of years (65M BC, 65 million BC)
     {
       regex: /^(\d+(?:\.\d+)?)\s*[Mm](?:\s+(?:BC|B\.C\.|BCE))?$/i,
-      format: m => `ext:${-Math.round(parseFloat(m[1]) * 1000000)}:BC`,
+      format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 6)}:BC`,
     },
     {
       regex:
         /^(\d+(?:\.\d+)?)\s*(?:million|[Mm])\s*(?:years?)?(?:\s+(?:ago|before|BC|B\.C\.|BCE))?$/i,
-      format: m => `ext:${-Math.round(parseFloat(m[1]) * 1000000)}:BC`,
+      format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 6)}:BC`,
     },
     {
       regex: /^(\d+(?:\.\d+)?)\s*(?:million|[Mm])(?:\s+(?:AD|A\.D\.|CE))?$/i,
-      format: m => `ext:${Math.round(parseFloat(m[1]) * 1000000)}:AD`,
+      format: m => `ext:${Math.round(parseFloat(m[1]) * 10 ** 6)}:AD`,
     },
 
     // Billions of years (4.5B BC, 4.5 billion BC)
     {
       regex: /^(\d+(?:\.\d+)?)\s*[Bb](?:\s+(?:BC|B\.C\.|BCE))?$/i,
-      format: m => `ext:${-Math.round(parseFloat(m[1]) * 1000000000)}:BC`,
+      format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 9)}:BC`,
     },
     {
       regex:
         /^(\d+(?:\.\d+)?)\s*(?:billion|[Bb])\s*(?:years?)?(?:\s+(?:ago|before|BC|B\.C\.|BCE))?$/i,
-      format: m => `ext:${-Math.round(parseFloat(m[1]) * 1000000000)}:BC`,
+      format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 9)}:BC`,
     },
     {
       regex: /^(\d+(?:\.\d+)?)\s*(?:billion|[Bb])(?:\s+(?:AD|A\.D\.|CE))?$/i,
-      format: m => `ext:${Math.round(parseFloat(m[1]) * 1000000000)}:AD`,
+      format: m => `ext:${Math.round(parseFloat(m[1]) * 10 ** 9)}:AD`,
     },
 
     // Direct year specifications with era
@@ -125,9 +124,6 @@ function parseUserInput(input) {
       return pattern.format(match)
     }
   }
-
-  // Add a debugging log to see which formats we're trying to parse
-  // console.log('Failed to parse as extended format:', cleanInput)
 
   // Try standard date formats
   const patterns = [
@@ -161,7 +157,6 @@ function parseUserInput(input) {
     }
   }
 
-  // Try to let JavaScript parse the date naturally
   try {
     const date = new Date(cleanInput)
     if (!isNaN(date.getTime())) {
@@ -172,7 +167,6 @@ function parseUserInput(input) {
   return null
 }
 
-// Rest of the functions remain the same
 function handleInput(event) {
   displayValue.value = event.target.value
 
@@ -188,12 +182,10 @@ function validateAndFormat() {
     model.value = parsed
     displayValue.value = formatDateForDisplay(parsed)
   } else if (displayValue.value.trim()) {
-    // Revert to the current valid date if input is invalid
     displayValue.value = formatDateForDisplay(model.value)
   }
 }
 
-// Initialize display value from model
 onMounted(() => {
   displayValue.value = formatDateForDisplay(model.value)
 })

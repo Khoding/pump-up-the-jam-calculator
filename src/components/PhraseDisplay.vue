@@ -47,7 +47,7 @@ const props = defineProps({
   },
 })
 
-const prefixText = ref('The chosen date is')
+const prefixText = ref(props.isToday ? 'Today is' : 'The chosen date is')
 
 const prefixMentionsPumpUpTheJam = computed(() => {
   const lowercaseValue = prefixText.value.toLowerCase()

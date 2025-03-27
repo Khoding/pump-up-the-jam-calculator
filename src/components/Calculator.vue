@@ -1,70 +1,24 @@
 <template>
-  <section class="wrapper-section">
-    <DatePicker v-model="selectedDate" />
-
-    <p class="countdown-units" v-if="isToday(userDate)">Today is</p>
-
-    <nav v-else class="edit-prefix center-align no-margin">
-      <p class="countdown-units" v-if="!isEditing">{{ modelValue }}</p>
-      <div class="field label border no-margin no-padding" v-else>
-        <input v-model="editingValue" @keyup.enter="toggleEdit" type="text" ref="inputRef" />
-        <label>Prefix sentence</label>
-      </div>
-      <button
-        class="circle fill small"
-        @click="toggleEdit"
-        :aria-label="isEditing ? 'Save text' : 'Edit text'"
-      >
-        <i>{{ isEditing ? 'save' : 'edit' }}</i>
-      </button>
-    </nav>
-
-    <p class="countdown-units bold primary">{{ formatTimeDifference(timeDifferenceMs) }}</p>
-    <p
-      class="countdown-units"
-      v-if="isToday(userDate) || (!isToday(userDate) && timeDifferenceMs > 0 && !isSameDate)"
-    >
-      after
-    </p>
-    <p class="countdown-units" v-else-if="!isSameDate">before</p>
-
-    <p class="countdown-units">
-      the release of <span v-if="!prefixMentionsPumpUpTheJam">unrelated</span>
-    </p>
-    <p class="countdown-units">Belgian Techno anthem</p>
-    <p class="countdown-units bold">Pump Up The Jam</p>
-    <p class="small-text">(Released as a single on 18 August 1989)</p>
-  </section>
-
-  <button @click="copyText" @keyup.enter="copyText">Copy full text</button>
+  <DatePicker v-model="selectedDate" />
+  <PhraseDisplay
+    :timeDifferenceMs="timeDifferenceMs"
+    :formattedTimeDifference="formatTimeDifference(timeDifferenceMs)"
+    :isToday="isToday(userDate)"
+    :isSameDate="isSameDate"
+    :isExtendedDate="userDate.isExtended"
+  />
 </template>
 
 <script setup>
-import {ref, computed, nextTick} from 'vue'
-
+import {ref, computed} from 'vue'
 import DatePicker from '@/components/DatePicker.vue'
+import PhraseDisplay from '@/components/PhraseDisplay.vue'
 
 const pumpUpTheJamReleaseDate = new Date(1989, 7, 18)
 const pumpUpTheJamYear = pumpUpTheJamReleaseDate.getFullYear()
 const pumpUpTheJamTimestamp = pumpUpTheJamReleaseDate.getTime()
 
 const selectedDate = ref(new Date().toISOString().split('T')[0])
-
-const isEditing = ref(false)
-const editingValue = ref('')
-const inputRef = ref(null)
-
-const toggleEdit = async () => {
-  if (isEditing.value) {
-    modelValue.value = editingValue.value
-    isEditing.value = false
-  } else {
-    editingValue.value = modelValue.value.trim()
-    isEditing.value = true
-    await nextTick()
-    inputRef.value?.focus()
-  }
-}
 
 const userDate = computed(() => {
   // Check if this is an extended date format
@@ -187,78 +141,4 @@ const formatTimeDifference = ms => {
     return `${days} ${days === 1 ? 'day' : 'days'}`
   }
 }
-
-const modelValue = defineModel({
-  type: String,
-  default: 'The chosen date is',
-})
-
-const prefixMentionsPumpUpTheJam = computed(() => {
-  const lowercaseValue = modelValue.value.toLowerCase()
-
-  return (
-    lowercaseValue.includes('pump up the jam') ||
-    lowercaseValue.includes('technotronic') ||
-    lowercaseValue.includes('ya kid k') ||
-    lowercaseValue.includes('manuela kamosi') ||
-    lowercaseValue.includes('thomas de quincey') ||
-    lowercaseValue.includes('techno music')
-  )
-})
-
-const copyText = () => {
-  const unrelatedText = prefixMentionsPumpUpTheJam.value ? '' : 'unrelated '
-  let textToCopy
-  if (isSameDate.value) {
-    textToCopy = `${isToday(userDate.value) ? 'Today is' : modelValue.value} the same date as the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
-  } else {
-    textToCopy = `${isToday(userDate.value) ? 'Today is' : modelValue.value} ${formatTimeDifference(timeDifferenceMs.value)} ${isToday(userDate.value) || (!isToday(userDate.value) && timeDifferenceMs.value > 0) ? 'after' : 'before'} the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam" (Released as a single on 18 August 1989)`
-  }
-  navigator.clipboard.writeText(textToCopy)
-}
 </script>
-
-<style scoped>
-.wrapper-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-inline: 16px;
-}
-
-.edit-prefix {
-  flex-direction: column-reverse;
-  gap: 0.5rem;
-
-  .countdown-units {
-    margin-block: 0;
-  }
-}
-
-.countdown-units {
-  font-size: 1.5rem;
-  margin-block: 0.25rem;
-  text-wrap: pretty;
-
-  &.bold.primary {
-    line-height: normal;
-    max-inline-size: 18ch;
-    white-space: inherit;
-  }
-}
-
-@media screen and (min-width: 32rem) {
-  .countdown-units {
-    font-size: 2rem;
-    margin-block: 0.5rem;
-
-    &.bold.primary {
-      max-inline-size: none;
-    }
-  }
-}
-
-.tooltip {
-  pointer-events: none;
-}
-</style>

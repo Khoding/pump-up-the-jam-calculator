@@ -3,11 +3,11 @@
     <h1 class="h1">Pump Up The Jam Calculator</h1>
   </div>
 
-  <main class="center-align top-margin bottom-margin">
+  <main class="responsive center-align top-margin bottom-margin">
     <Calculator />
   </main>
 
-  <p class="center-align bottom-margin left-padding right-padding">
+  <footer>
     <a
       href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
       class="link"
@@ -15,7 +15,7 @@
       rel="noopener noreferrer"
       >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
     >
-  </p>
+  </footer>
 </template>
 
 <script setup>

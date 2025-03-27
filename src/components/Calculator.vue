@@ -87,14 +87,14 @@ const formatTimeDifference = ms => {
     const absYearDiff = Math.abs(userDate.value.yearDifference)
 
     // Display based on magnitude with simple wording that works with before/after
-    if (absYearDiff >= 1000000000) {
-      return `around ${(absYearDiff / 1000000000).toFixed(1)} billion years`
+    if (absYearDiff >= 10 ** 9) {
+      return `around ${(absYearDiff / 10 ** 9).toFixed(1)} billion years`
     }
-    if (absYearDiff >= 1000000) {
-      return `around ${(absYearDiff / 1000000).toFixed(1)} million years`
+    if (absYearDiff >= 10 ** 6) {
+      return `around ${(absYearDiff / 10 ** 6).toFixed(1)} million years`
     }
-    if (absYearDiff >= 1000) {
-      return `around ${(absYearDiff / 1000).toFixed(1)} thousand years`
+    if (absYearDiff >= 10 ** 3) {
+      return `around ${(absYearDiff / 10 ** 3).toFixed(1)} thousand years`
     }
     // Use "approximately" for medium timeframes, nothing for recent dates
     return absYearDiff > 100 ? `approximately ${absYearDiff} years` : `${absYearDiff} years`

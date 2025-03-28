@@ -1,11 +1,12 @@
 <template>
   <nav class="center-align no-margin vertical">
     <button
-      class="circle fill small"
+      class="fill small"
       @click="toggleEdit"
       :aria-label="isEditing ? 'Save text' : 'Edit text'"
     >
-      <i>{{ isEditing ? 'save' : 'edit' }}</i>
+      <i class="small">{{ isEditing ? 'save' : 'edit' }}</i>
+      Edit {{ buttonText }}
     </button>
 
     <h4 v-if="!isEditing">{{ modelValue }}</h4>
@@ -20,6 +21,13 @@
 import {ref, nextTick} from 'vue'
 
 const modelValue = defineModel()
+
+const props = defineProps({
+  buttonText: {
+    type: String,
+    required: true,
+  },
+})
 
 const isEditing = ref(false)
 const editingValue = ref('')

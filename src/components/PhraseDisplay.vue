@@ -8,12 +8,12 @@
       </article>
     </nav>
 
-    <h4 v-if="isToday || (!isToday && timeDifferenceMs > 0 && !isSameDate)">after</h4>
-    <h4 v-else-if="!isSameDate">before</h4>
+    <h6>{{ isToday || (!isToday && timeDifferenceMs > 0 && !isSameDate) ? 'after' : 'before' }}</h6>
 
     <h4>the release of <span v-if="!prefixMentionsPumpUpTheJam">unrelated</span></h4>
     <h4>Belgian Techno anthem</h4>
     <h4 class="bold">Pump Up The Jam</h4>
+
     <p class="small-text">(Released as a single on 18 August 1989)</p>
   </section>
 

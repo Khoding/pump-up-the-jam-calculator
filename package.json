@@ -1,6 +1,6 @@
 {
   "name": "pump-up-the-jam-calculator",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,14 +13,14 @@
   },
   "dependencies": {
     "beercss": "^3.9.7",
-    "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-pwa": "^0.21.2",
     "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^5.2.3",
     "gh-pages": "^6.3.0",
     "prettier": "3.5.3",
-    "vite": "^6.2.1",
+    "vite": "^6.2.3",
     "vite-plugin-vue-devtools": "^7.7.2"
   }
 }

@@ -17,7 +17,7 @@
     <p class="small-text">(Released as a single on 18 August 1989)</p>
   </section>
 
-  <button @click="copyText" @keyup.enter="copyText" class="small tertiary">Copy full text</button>
+  <button @click="copyText" @keyup.enter="copyText" class="small tertiary">Copy text</button>
 </template>
 
 <script setup>
@@ -66,9 +66,9 @@ const copyText = () => {
   const unrelatedText = prefixMentionsPumpUpTheJam.value ? '' : 'unrelated '
   let textToCopy
   if (props.isSameDate) {
-    textToCopy = `${props.isToday ? 'Today is' : prefixText.value} the same date as the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam"`
+    textToCopy = `${prefixText.value} the same date as the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam"`
   } else {
-    textToCopy = `${props.isToday ? 'Today is' : prefixText.value} ${props.formattedTimeDifference} ${props.isToday || (!props.isToday && props.timeDifferenceMs > 0) ? 'after' : 'before'} the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam"`
+    textToCopy = `${prefixText.value} ${props.formattedTimeDifference} ${props.isToday || (!props.isToday && props.timeDifferenceMs > 0) ? 'after' : 'before'} the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam"`
   }
   navigator.clipboard.writeText(textToCopy)
 }

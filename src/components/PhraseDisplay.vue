@@ -1,6 +1,6 @@
 <template>
   <section class="vertical">
-    <EditableText v-model="prefixText" button-text="prefix sentence" />
+    <EditableText v-model="prefixText" />
 
     <nav class="center-align">
       <article class="primary-container auto-width">

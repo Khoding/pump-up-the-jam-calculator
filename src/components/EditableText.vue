@@ -6,7 +6,7 @@
       :aria-label="isEditing ? 'Save text' : 'Edit text'"
     >
       <i class="small">{{ isEditing ? 'save' : 'edit' }}</i>
-      Edit {{ buttonText }}
+      Edit prefix sentence
     </button>
 
     <h4 v-if="!isEditing">{{ modelValue }}</h4>
@@ -21,13 +21,6 @@
 import {ref, nextTick} from 'vue'
 
 const modelValue = defineModel()
-
-const props = defineProps({
-  buttonText: {
-    type: String,
-    required: true,
-  },
-})
 
 const isEditing = ref(false)
 const editingValue = ref('')

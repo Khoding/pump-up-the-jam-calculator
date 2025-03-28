@@ -10,15 +10,13 @@
 
     <h6>{{ isToday || (!isToday && timeDifferenceMs > 0 && !isSameDate) ? 'after' : 'before' }}</h6>
 
-    <h4>the release of <span v-if="!prefixMentionsPumpUpTheJam">unrelated</span></h4>
-    <h4>Belgian Techno anthem</h4>
-    <h4 class="bold">Pump Up The Jam</h4>
-
-    <p class="small-text">(Released as a single on 18 August 1989)</p>
+    <h4 v-for="line in suffixLines">{{ line }}</h4>
   </section>
 
-  <button @click="editSuffix" class="small secondary">Edit suffix text</button>
-  <button @click="copyText" @keyup.enter="copyText" class="small tertiary">Copy full text</button>
+  <nav class="center-align wrap">
+    <button @click="editSuffix" class="small secondary">Edit suffix text</button>
+    <button @click="copyText" @keyup.enter="copyText" class="small tertiary">Copy full text</button>
+  </nav>
 
   <dialog ref="suffixDialog">
     <h3>Edit suffix text</h3>
@@ -40,7 +38,7 @@
 </template>
 
 <script setup>
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 import EditableText from '@/components/EditableText.vue'
 
 const props = defineProps({
@@ -74,19 +72,6 @@ const suffixLines = ref([...defaultSuffixLines])
 const suffixDialog = ref(null)
 const suffixTextEdit = ref('')
 
-const prefixMentionsPumpUpTheJam = computed(() => {
-  const lowercaseValue = prefixText.value.toLowerCase()
-
-  return (
-    lowercaseValue.includes('pump up the jam') ||
-    lowercaseValue.includes('technotronic') ||
-    lowercaseValue.includes('ya kid k') ||
-    lowercaseValue.includes('manuela kamosi') ||
-    lowercaseValue.includes('thomas de quincey') ||
-    lowercaseValue.includes('techno music')
-  )
-})
-
 const editSuffix = () => {
   suffixTextEdit.value = suffixLines.value.join('\n')
   suffixDialog.value.showModal()
@@ -109,16 +94,13 @@ const resetToDefault = () => {
 }
 
 const copyText = () => {
-  const unrelatedText = prefixMentionsPumpUpTheJam.value ? '' : 'unrelated '
-  const compiledSuffix = suffixLines.value
-    .join(' ')
-    .replace('<span v-if="!prefixMentionsPumpUpTheJam">unrelated</span>', unrelatedText.trim())
+  const compiledSuffix = suffixLines.value.join(' ')
 
   let textToCopy
   if (props.isSameDate) {
-    textToCopy = `${props.isToday ? 'Today is' : prefixText.value} the same date as ${compiledSuffix} (Released as a single on 18 August 1989)`
+    textToCopy = `${props.isToday ? 'Today is' : prefixText.value} the same date as ${compiledSuffix}`
   } else {
-    textToCopy = `${props.isToday ? 'Today is' : prefixText.value} ${props.formattedTimeDifference} ${props.isToday || (!props.isToday && props.timeDifferenceMs > 0) ? 'after' : 'before'} ${compiledSuffix} (Released as a single on 18 August 1989)`
+    textToCopy = `${props.isToday ? 'Today is' : prefixText.value} ${props.formattedTimeDifference} ${props.isToday || (!props.isToday && props.timeDifferenceMs > 0) ? 'after' : 'before'} ${compiledSuffix}`
   }
   navigator.clipboard.writeText(textToCopy)
 }

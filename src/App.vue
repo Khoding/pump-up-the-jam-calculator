@@ -10,13 +10,24 @@
   </main>
 
   <footer>
-    <a
-      href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
-      class="link"
-      target="_blank"
-      rel="noopener noreferrer"
-      >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
-    >
+    <nav class="center-align vertical no-space">
+      <p class="small-text">
+        <span class="bold">
+          <a href="https://youtu.be/9EcjWd-O4jI?si=xLXTwDTi2SO2fqdH" class="link"
+            >Pump Up The Jam</a
+          ></span
+        >
+        was released as a single on
+        <span class="bold">18 August 1989</span>
+      </p>
+      <a
+        href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
+        class="link"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
+      >
+    </nav>
   </footer>
 </template>
 

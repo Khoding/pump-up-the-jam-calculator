@@ -8,9 +8,14 @@
       </article>
     </nav>
 
-    <h6>{{ isToday || (!isToday && timeDifferenceMs > 0 && !isSameDate) ? 'after' : 'before' }}</h6>
+    <h6 v-if="!isSameDate">
+      {{ isToday || (!isToday && timeDifferenceMs > 0) ? 'after' : 'before' }}
+    </h6>
 
-    <h4>the release of <span v-if="!prefixMentionsPumpUpTheJam">unrelated</span></h4>
+    <h4>
+      the <span v-if="includeYear && !isSameDate">1989</span> release of
+      <span v-if="!prefixMentionsPumpUpTheJam">unrelated</span>
+    </h4>
     <h4>Belgian Techno anthem</h4>
     <h4 class="bold">Pump Up The Jam</h4>
 
@@ -48,6 +53,9 @@ const props = defineProps({
 })
 
 const prefixText = ref(props.isToday ? 'Today is' : 'The chosen date is')
+const includeYear = computed(() => {
+  return props.timeDifferenceMs !== undefined ? (Math.random() > 0.5 ? '1989 ' : '') : ''
+})
 
 const prefixMentionsPumpUpTheJam = computed(() => {
   const lowercaseValue = prefixText.value.toLowerCase()
@@ -64,11 +72,12 @@ const prefixMentionsPumpUpTheJam = computed(() => {
 
 const copyText = () => {
   const unrelatedText = prefixMentionsPumpUpTheJam.value ? '' : 'unrelated '
+
   let textToCopy
   if (props.isSameDate) {
     textToCopy = `${prefixText.value} the same date as the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam"`
   } else {
-    textToCopy = `${prefixText.value} ${props.formattedTimeDifference} ${props.isToday || (!props.isToday && props.timeDifferenceMs > 0) ? 'after' : 'before'} the release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam"`
+    textToCopy = `${prefixText.value} ${props.formattedTimeDifference} ${props.isToday || (!props.isToday && props.timeDifferenceMs > 0) ? 'after' : 'before'} the ${includeYear.value}release of ${unrelatedText}Belgian Techno anthem "Pump Up The Jam"`
   }
   navigator.clipboard.writeText(textToCopy)
 }

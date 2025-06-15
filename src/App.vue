@@ -9,7 +9,7 @@
     <Calculator />
   </main>
 
-  <footer>
+  <footer class="center-align">
     <a
       href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
       class="link"

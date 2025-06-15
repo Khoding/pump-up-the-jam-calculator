@@ -1,5 +1,5 @@
 <template>
-  <header class="fill">
+  <header class="primary">
     <nav class="center-align padding">
       <h1 class="h1">Pump Up The Jam Calculator</h1>
     </nav>
@@ -9,21 +9,16 @@
     <Calculator />
   </main>
 
-  <footer class="center-align fill">
-    <a
-      href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
-      class="link"
-      target="_blank"
-      rel="noopener noreferrer"
-      >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
-    >
-    <a
-      href="https://music.youtube.com/watch?v=9EcjWd-O4jI"
-      class="link"
-      target="_blank"
-      rel="noopener noreferrer"
-      >Pump Up The Jam (Official Music Video) - Technotronic</a
-    >
+  <footer class="center-align">
+    <span>
+      <a
+        href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
+        class="link"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
+      >
+    </span>
   </footer>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="fill">
     <nav class="center-align padding">
       <h1 class="h1">Pump Up The Jam Calculator</h1>
     </nav>
@@ -9,7 +9,7 @@
     <Calculator />
   </main>
 
-  <footer class="center-align">
+  <footer class="center-align fill">
     <a
       href="https://youtu.be/-Su287HvJRQ?si=m3sR7GWcSeNBvSpc"
       class="link"

@@ -3,7 +3,7 @@
     <EditableText v-model="prefixText" />
 
     <nav class="center-align">
-      <article class="primary-container shape pentagon extra">
+      <article class="primary-container shape sided-cookie12 small-width small-height">
         <h6 class="bold">{{ formattedTimeDifference }}</h6>
       </article>
     </nav>

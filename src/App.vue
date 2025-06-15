@@ -17,6 +17,13 @@
       rel="noopener noreferrer"
       >Every 'Pump Up The Jam' Segue - Philomena Cunk</a
     >
+    <a
+      href="https://music.youtube.com/watch?v=9EcjWd-O4jI"
+      class="link"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Pump Up The Jam (Official Music Video) - Technotronic</a
+    >
   </footer>
 </template>
 

@@ -24,27 +24,19 @@ const selectedDate = ref(
 )
 
 const userDate = computed(() => {
-  // Check if this is an extended date format
   if (selectedDate.value.startsWith('ext:')) {
-    // Parse the extended date
     const parts = selectedDate.value.substring(4).split(':')
     const year = parseInt(parts[0])
     const era = parts[1] || 'AD'
 
-    // For timestamp calculation, we need to properly account for the relationship to our reference date
-    // If BC (negative year): Calculate from year 0 to our reference year + years BC
-    // If AD: Simply calculate the difference between years
     const yearDifferenceFromReference =
-      era === 'BC'
-        ? pumpUpTheJamYear + Math.abs(year) // BC years count backwards from 0
-        : year - pumpUpTheJamYear // AD years count forward from 0
+      era === 'BC' ? pumpUpTheJamYear + Math.abs(year) : year - pumpUpTheJamYear
 
     return {
       isExtended: true,
       year: year,
       era: era,
       yearDifference: yearDifferenceFromReference,
-      // Use the adjusted year difference for timestamp
       timestamp: year * 365.25 * 24 * 60 * 60 * 1000,
     }
   }
@@ -75,21 +67,17 @@ const timeDifferenceMs = computed(() => {
 
 const isSameDate = computed(() => {
   if (userDate.value.isExtended) return false
-  return Math.abs(timeDifferenceMs.value) < 86400000 // Less than one day difference
+  return Math.abs(timeDifferenceMs.value) < 86400000
 })
 
 const formatTimeDifference = ms => {
-  // Special case for same date
   if (Math.abs(ms) < 86400000 && !userDate.value.isExtended) {
-    // Less than one day difference
     return 'the same date as'
   }
 
-  // Special handling for extended dates
   if (userDate.value.isExtended) {
     const absYearDiff = Math.abs(userDate.value.yearDifference)
 
-    // Display based on magnitude with simple wording that works with before/after
     if (absYearDiff >= 10 ** 9) {
       return `around ${(absYearDiff / 10 ** 9).toFixed(1)} billion years`
     }
@@ -99,7 +87,6 @@ const formatTimeDifference = ms => {
     if (absYearDiff >= 10 ** 3) {
       return `around ${(absYearDiff / 10 ** 3).toFixed(1)} thousand years`
     }
-    // Use "approximately" for medium timeframes, nothing for recent dates
     return absYearDiff > 100 ? `approximately ${absYearDiff} years` : `${absYearDiff} years`
   }
 

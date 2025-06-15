@@ -19,15 +19,12 @@ const model = defineModel({
 
 const displayValue = ref('')
 
-// Format extended date strings for display
 function formatDateForDisplay(dateString) {
-  // Check for extended date format (contains special prefix)
   if (dateString.startsWith('ext:')) {
     const parts = dateString.substring(4).split(':')
     const year = parseInt(parts[0])
     const era = parts[1] || 'AD'
 
-    // Format large numbers with appropriate units
     if (Math.abs(year) >= 10 ** 9) {
       return `${(year / 10 ** 9).toFixed(1)}B ${era}`
     } else if (Math.abs(year) >= 10 ** 6) {
@@ -37,8 +34,6 @@ function formatDateForDisplay(dateString) {
     }
     return `${year} ${era}`
   }
-
-  // Standard date formatting for dates within JavaScript's range
   try {
     const date = new Date(dateString)
     if (!isNaN(date.getTime())) {
@@ -49,13 +44,10 @@ function formatDateForDisplay(dateString) {
   return dateString
 }
 
-// Parse user input and convert to appropriate date format
 function parseUserInput(input) {
   const cleanInput = input.trim()
 
-  // Extended date format patterns for geological time scales
   const extendedPatterns = [
-    // Thousands of years (10K BC, 10 thousand BC)
     {
       regex: /^(\d+(?:\.\d+)?)\s*[Kk](?:\s+(?:BC|B\.C\.|BCE))?$/i,
       format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 3)}:BC`,
@@ -70,7 +62,6 @@ function parseUserInput(input) {
       format: m => `ext:${Math.round(parseFloat(m[1]) * 10 ** 3)}:AD`,
     },
 
-    // Millions of years (65M BC, 65 million BC)
     {
       regex: /^(\d+(?:\.\d+)?)\s*[Mm](?:\s+(?:BC|B\.C\.|BCE))?$/i,
       format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 6)}:BC`,
@@ -85,7 +76,6 @@ function parseUserInput(input) {
       format: m => `ext:${Math.round(parseFloat(m[1]) * 10 ** 6)}:AD`,
     },
 
-    // Billions of years (4.5B BC, 4.5 billion BC)
     {
       regex: /^(\d+(?:\.\d+)?)\s*[Bb](?:\s+(?:BC|B\.C\.|BCE))?$/i,
       format: m => `ext:${-Math.round(parseFloat(m[1]) * 10 ** 9)}:BC`,
@@ -100,7 +90,6 @@ function parseUserInput(input) {
       format: m => `ext:${Math.round(parseFloat(m[1]) * 10 ** 9)}:AD`,
     },
 
-    // Direct year specifications with era
     {
       regex: /^(\d+)\s*(?:BC|B\.C\.|BCE)$/i,
       format: m => `ext:${-parseInt(m[1])}:BC`,
@@ -110,14 +99,11 @@ function parseUserInput(input) {
       format: m => `ext:${parseInt(m[1])}:AD`,
     },
 
-    // Direct future years
     {
       regex: /^(\d{5,})\s*(?:in future)?$/i,
       format: m => `ext:${parseInt(m[1])}:AD`,
     },
   ]
-
-  // Check extended date patterns first
   for (const pattern of extendedPatterns) {
     const match = cleanInput.match(pattern.regex)
     if (match) {
@@ -125,19 +111,15 @@ function parseUserInput(input) {
     }
   }
 
-  // Try standard date formats
   const patterns = [
-    // DD/MM/YYYY or DD-MM-YYYY
     {
       regex: /^(\d{1,2})[\/\-\. ](\d{1,2})[\/\-\. ](\d{4})$/,
       format: m => `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`,
     },
-    // MM/DD/YYYY or MM-DD-YYYY
     {
       regex: /^(\d{1,2})[\/\-\. ](\d{1,2})[\/\-\. ](\d{4})$/,
       format: m => `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}`,
     },
-    // YYYY/MM/DD or YYYY-MM-DD
     {
       regex: /^(\d{4})[\/\-\. ](\d{1,2})[\/\-\. ](\d{1,2})$/,
       format: m => `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`,
